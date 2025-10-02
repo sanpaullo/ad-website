@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>АДешкин — сайт учителя информатики</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Rubik:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#111318; --panel:#161922; --text:#E6E8EB; --muted:#AAB2BF;
+      --brand:#3A7FFF; --accent:#36E0B8; --border:#232735;
+      --radius:14px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#F7F8FA; --panel:#FFFFFF; --text:#1B1F27; --muted:#5A6372; --border:#E6E8EB; }
+    }
+    *{ box-sizing:border-box }
+    body{
+      margin:0; font-family:"Rubik",system-ui,-apple-system,Segoe UI,Arial;
+      background:var(--bg); color:var(--text); line-height:1.6;
+    }
+    a{ color:var(--brand); text-decoration:none }
+    a:hover{ text-decoration:underline }
+    .wrap{ max-width:1100px; margin:0 auto; padding:0 20px }
+    header{
+      position:sticky; top:0; z-index:30;
+      backdrop-filter:saturate(1.2) blur(8px);
+      background:color-mix(in hsl, var(--bg) 80%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+    .logo{ display:flex; align-items:center; gap:10px; font-weight:700 }
+    .logo svg{ width:28px; height:28px }
+    .menu{ display:flex; gap:18px; align-items:center }
+    .menu a{ padding:8px 12px; border-radius:10px; }
+    .menu a:hover{ background:var(--panel) }
+    .cta{ background:var(--brand); color:white; padding:8px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:600; }
+    .hero{
+      border-bottom:1px solid var(--border);
+      background: radial-gradient(1200px 400px at 50% -10%, color-mix(in oklab, var(--brand) 15%, transparent) 0%, transparent 60%);
+    }
+    .hero .wrap{ padding:64px 20px 56px }
+    h1{ font-size:40px; line-height:1.15; margin:0 0 12px }
+    .subtitle{ color:var(--muted); max-width:720px; margin-bottom:24px }
+    section{ padding:48px 0; }
+    .grid{ display:grid; gap:16px; grid-template-columns:repeat(12,1fr) }
+    .card{
+      grid-column:span 4; background:var(--panel); border:1px solid var(--border);
+      border-radius:var(--radius); padding:18px;
+    }
+    .card h3{ margin:0 0 6px; font-size:18px }
+    .list{ display:flex; flex-direction:column; gap:10px; margin-top:10px }
+    .list a{ padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:var(--bg) }
+    .review{ border:1px solid var(--border); border-radius:var(--radius); padding:16px; background:var(--panel); margin-top:10px }
+    .tag{ font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--muted) }
+    footer{ border-top:1px solid var(--border); padding:24px 0; color:var(--muted) }
+    @media (max-width:960px){ .card{ grid-column:span 6 } }
+    @media (max-width:640px){ h1{ font-size:30px } .menu{ display:none } .card{ grid-column:span 12 } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav" role="navigation">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M8 8 L12 12 L8 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M13 8 H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <span>АДешкин</span>
+      </div>
+      <nav class="menu">
+        <a href="#classes">Классы</a>
+        <a href="#telegram">Канал Телеграм</a>
+        <a href="#reviews">Обзоры</a>
+        <a class="cta" href="#signup">Записаться</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <h1>Информатика без скуки: <br>пишем код, решаем задачи, делаем проекты</h1>
+        <p class="subtitle">Материалы по программированию, подготовка к олимпиадам и ЕГЭ/ОГЭ, проектные работы и аккуратные конспекты.</p>
+      </div>
+    </section>
+
+    <section id="classes" class="wrap">
+      <h2>Классы</h2>
+      <div id="classesGrid" class="grid" role="list"></div>
+    </section>
+
+    <section id="telegram" class="wrap">
+      <h2>Канал Телеграм</h2>
+      <p class="subtitle">Анонсы уроков, полезные ссылки и разборы задач в коротком формате.</p>
+      <div class="list">
+        <a href="https://t.me/your_channel" target="_blank" rel="noopener">Подписаться ↗</a>
+      </div>
+    </section>
+
+    <section id="reviews" class="wrap">
+      <h2>Обзоры</h2>
+      <div class="grid">
+        <div class="review" style="grid-column:span 6">
+          <div class="stars">★★★★★</div>
+          <p>Подборка ноутбуков для программирования в школе.</p>
+        </div>
+        <div class="review" style="grid-column:span 6">
+          <div class="stars">★★★★☆</div>
+          <p>Среды разработки для начинающих: Thonny, VS Code.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="signup" class="wrap">
+      <h2>Запись и обратная связь</h2>
+      <form class="grid" onsubmit="event.preventDefault(); alert('Спасибо! Я свяжусь с вами.');">
+        <input required placeholder="Имя" class="card" style="grid-column:span 6">
+        <input required type="email" placeholder="Email" class="card" style="grid-column:span 6">
+        <textarea required placeholder="Сообщение" class="card" style="grid-column:span 12; min-height:120px"></textarea>
+        <button class="cta" style="grid-column:span 3">Отправить</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="y"></span> АДешкин • Учитель информатики
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    async function renderClasses(){
+      const grid = document.getElementById('classesGrid');
+      try {
+        const res = await fetch('classes.json', {cache:'no-store'});
+        const data = await res.json();
+        const order = [['7–8','7-8'], ['9–10','9-10'], ['11','11']];
+
+        for (const [label, key] of order){
+          const topics = data[key] || [];
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.setAttribute('role','listitem');
+
+          const title = document.createElement('h3');
+          title.textContent = label + ' классы';
+          card.appendChild(title);
+
+          if (topics.length === 0){
+            const p = document.createElement('p');
+            p.textContent = 'Материалы появятся скоро.';
+            card.appendChild(p);
+          } else {
+            for (const t of topics){
+              const box = document.createElement('div');
+              box.className = 'review';
+
+              const h = document.createElement('div');
+              h.style.fontWeight = '600';
+              h.textContent = t.title;
+              box.appendChild(h);
+
+              const list = document.createElement('div');
+              list.className = 'list';
+              for (const it of (t.items || [])){
+                const a = document.createElement('a');
+                a.href = it.url; a.target = '_blank'; a.rel = 'noopener';
+                a.textContent = `${it.label} ↗`;
+                list.appendChild(a);
+              }
+              box.appendChild(list);
+
+              const meta = document.createElement('span');
+              meta.className = 'tag';
+              const tags = (t.tags && t.tags.length) ? ` • ${t.tags.join(', ')}` : '';
+              meta.textContent = `обновлено: ${t.updated || '—'}${tags}`;
+              box.appendChild(meta);
+
+              card.appendChild(box);
+            }
+          }
+          grid.appendChild(card);
+        }
+      } catch(e){
+        const err = document.createElement('p');
+        err.textContent = 'Не удалось загрузить список материалов.';
+        grid.appendChild(err);
+        console.error(e);
+      }
+    }
+    renderClasses();
+  </script>
+</body>
+</html>
