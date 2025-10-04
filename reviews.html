@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Обзоры — АДешкин</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Rubik:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a href="index.html" class="logo"><span>АДешкин</span></a>
+      <nav class="menu">
+        <a href="classes.html">Классы</a>
+        <a href="reviews.html" class="is-active">Обзоры</a>
+        <a href="index.html#telegram">Канал Телеграм</a>
+        <a class="cta" href="index.html#signup">Записаться</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Все обзоры</h1>
+    <div id="reviewsGrid" class="grid"></div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      © <span id="y"></span> АДешкин
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    async function renderAllReviews(){
+      try{
+        const res = await fetch('reviews.json');
+        const data = await res.json();
+        const grid=document.getElementById('reviewsGrid');
+        data.forEach(r=>{
+          const div=document.createElement('div');
+          div.className='card';
+          div.innerHTML=`<h3>${r.title}</h3><p>${r.summary}</p><a href="${r.url}" target="_blank">Читать обзор ↗</a>`;
+          grid.appendChild(div);
+        });
+      }catch(e){console.error(e);}
+    }
+    renderAllReviews();
+  </script>
+</body>
+</html>

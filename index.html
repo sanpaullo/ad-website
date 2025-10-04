@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>АДешкин — сайт учителя информатики</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Rubik:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -10,18 +10,19 @@
 <body>
   <header>
     <div class="wrap nav">
-      <div class="logo">
+      <a href="index.html" class="logo">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.8"/>
           <path d="M8 8 L12 12 L8 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M13 8 H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
         </svg>
         <span>АДешкин</span>
-      </div>
-      <nav class="menu">
+      </a>
+      <nav class="menu" id="mainMenu">
         <a href="classes.html">Классы</a>
+        <a href="reviews.html">Обзоры</a>
         <a href="#telegram">Канал Телеграм</a>
-        <a href="#reviews">Обзоры</a>
+        <a class="cta" href="#signup">Записаться</a>
       </nav>
     </div>
   </header>
@@ -29,47 +30,40 @@
   <main>
     <section class="hero">
       <div class="wrap">
-        <h1>Информатика без скуки: <br>пишем код, решаем задачи, делаем проекты</h1>
-        <p class="subtitle">Материалы по программированию, подготовка к олимпиадам и ЕГЭ/ОГЭ, проектные работы и конспекты.</p>
-        <div class="badges">
-          <span class="badge">Python</span>
-          <span class="badge">Web</span>
-          <span class="badge">Git</span>
-        </div>
-      </div>
-    </section>
-
-    <section id="telegram" class="wrap">
-      <h2>Канал Телеграм</h2>
-      <p class="subtitle">Анонсы уроков, полезные ссылки и разборы задач в коротком формате.</p>
-      <div class="list">
-        <a href="https://t.me/your_channel" target="_blank" rel="noopener">Подписаться ↗</a>
+        <h1>Информатика без скуки</h1>
+        <p class="subtitle">Проекты, уроки и обзоры от учителя информатики А. Дешкина</p>
       </div>
     </section>
 
     <section id="reviews" class="wrap">
-      <h2>Обзоры</h2>
-      <div class="grid">
-        <div class="review" style="grid-column:span 6">
-          <div class="stars" aria-label="Оценка 5 из 5">★★★★★</div>
-          <p>Подборка ноутбуков для программирования в школе.</p>
-          <span class="tag">техника • 10 мин</span>
-        </div>
-        <div class="review" style="grid-column:span 6">
-          <div class="stars" aria-label="Оценка 4 из 5">★★★★☆</div>
-          <p>Среды разработки для начинающих: Thonny, VS Code.</p>
-          <span class="tag">софт • 8 мин</span>
-        </div>
-      </div>
+      <h2>Свежие обзоры</h2>
+      <div id="latestReviews" class="grid"></div>
+      <p><a href="reviews.html">Смотреть все обзоры →</a></p>
     </section>
   </main>
 
   <footer>
     <div class="wrap">
-      © <span id="y"></span> АДешкин • Учитель информатики · <a href="classes.html">Классы</a>
+      © <span id="y"></span> АДешкин • Учитель информатики
     </div>
   </footer>
 
-  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    async function loadReviews(){
+      try{
+        const res = await fetch('reviews.json');
+        const data = await res.json();
+        const grid = document.getElementById('latestReviews');
+        data.slice(0,3).forEach(r=>{
+          const div=document.createElement('div');
+          div.className='card';
+          div.innerHTML=`<h3>${r.title}</h3><p>${r.summary}</p><a href="${r.url}" target="_blank">Читать обзор ↗</a>`;
+          grid.appendChild(div);
+        });
+      }catch(e){console.error(e);}
+    }
+    loadReviews();
+  </script>
 </body>
 </html>
