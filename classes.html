@@ -1,10 +1,24 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Классы — АДешкин</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Rubik:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .tabs { display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap }
+    .tab-btn { padding:8px 14px; border:1px solid var(--border); border-radius:10px; background:var(--panel); cursor:pointer }
+    .tab-btn.active { background:var(--brand); color:#fff; font-weight:600 }
+    .filters { display:flex; gap:12px; flex-wrap:wrap; margin:12px 0 20px }
+    .search { flex:1 1 260px; min-width:220px; display:flex; align-items:center; gap:8px }
+    .search input{ width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:var(--panel); color:var(--text) }
+    .tags { display:flex; gap:8px; flex-wrap:wrap }
+    .tag-pill { padding:6px 10px; border:1px solid var(--border); border-radius:999px; background:var(--panel); font-size:13px; cursor:pointer; user-select:none }
+    .tag-pill.active { background:var(--brand); color:#fff; border-color:transparent }
+    .filters .clear { padding:8px 12px; border:1px solid var(--border); border-radius:10px; background:var(--panel); cursor:pointer }
+    .muted { color:var(--muted); font-size:14px }
+  </style>
 </head>
 <body>
   <header>
@@ -18,26 +32,31 @@
       </nav>
     </div>
   </header>
+
   <main class="wrap">
     <h1>Материалы по классам</h1>
-    <div id="classContent"></div>
+    <p class="subtitle">Выберите класс, используйте поиск и фильтр по тегам.</p>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="filters">
+      <div class="search">
+        <input id="q" type="search" placeholder="Поиск по темам, ссылкам и тегам…" aria-label="Поиск">
+      </div>
+      <button id="clearFilters" class="clear" type="button">Сбросить фильтры</button>
+      <div class="muted" id="resultCount"></div>
+    </div>
+
+    <div class="tags" id="tagCloud"></div>
+
+    <div id="classContent" class="grid" style="margin-top:16px"></div>
   </main>
-  <footer><div class="wrap">© <span id="y"></span> АДешкин</div></footer>
-  <script>
-    document.getElementById('y').textContent = new Date().getFullYear();
-    async function loadClasses(){
-      const res=await fetch('classes.json'); const data=await res.json();
-      const cont=document.getElementById('classContent');
-      for(const [cls,items] of Object.entries(data)){
-        const h=document.createElement('h2'); h.textContent=cls+' класс'; cont.appendChild(h);
-        items.forEach(t=>{
-          const d=document.createElement('div'); d.className='card';
-          d.innerHTML=`<h3>${t.title}</h3><a href="${t.items[0].url}" target="_blank">${t.items[0].label} ↗</a>`;
-          cont.appendChild(d);
-        });
-      }
-    }
-    loadClasses();
-  </script>
+
+  <footer>
+    <div class="wrap">© <span id="y"></span> АДешкин</div>
+  </footer>
+
+  <script>document.getElementById('y').textContent = new Date().getFullYear();</script>
+  <script src="classes.js"></script>
 </body>
 </html>

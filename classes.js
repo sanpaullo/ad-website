@@ -1,28 +1,27 @@
-// Полный скрипт для вкладок 5–11, поиска и фильтра по тегам
+// Вкладки 5–11, поиск и фильтр по тегам + сохранение выбранной вкладки в URL (?class=9)
 const classesList = [
   ["5 класс","5"], ["6 класс","6"], ["7 класс","7"],
   ["8 класс","8"], ["9 класс","9"], ["10 класс","10"], ["11 класс","11"]
 ];
 
 let allData = {};
-let activeKey = classesList[0][1];
+let activeKey = getClassFromUrl() || classesList[0][1];
 let activeTags = new Set();
-let q = "";
+let q = getParam('q') || '';
 
-// Debounce
 function debounce(fn, wait){ let t; return (...args)=>{ clearTimeout(t); t=setTimeout(()=>fn.apply(this,args), wait); }; }
 
-// Init
 document.addEventListener('DOMContentLoaded', ()=>{
-  loadData();
   const qInput = document.getElementById('q');
-  qInput.addEventListener('input', debounce(()=>{ q = qInput.value.trim().toLowerCase(); showClass(activeKey); }, 200));
+  if(q){ qInput.value = q; }
+  qInput.addEventListener('input', debounce(()=>{ q = qInput.value.trim().toLowerCase(); showClass(activeKey, {updateUrl:true}); }, 200));
   document.getElementById('clearFilters').addEventListener('click', ()=>{
-    q = ""; document.getElementById('q').value = "";
+    q = ''; document.getElementById('q').value = '';
     activeTags.clear();
     document.querySelectorAll('.tag-pill').forEach(p=>p.classList.remove('active'));
-    showClass(activeKey);
+    showClass(activeKey, {updateUrl:true});
   });
+  loadData();
 });
 
 async function loadData(){
@@ -31,7 +30,7 @@ async function loadData(){
     allData = await res.json();
     renderTabs();
     buildTagCloud();
-    showClass(activeKey);
+    showClass(activeKey, {updateUrl:false});
   }catch(e){
     document.getElementById('classContent').textContent = 'Ошибка загрузки материалов.';
     console.error(e);
@@ -41,20 +40,23 @@ async function loadData(){
 function renderTabs(){
   const tabs = document.getElementById('tabs');
   tabs.innerHTML = '';
-  classesList.forEach(([label,key], i)=>{
+  classesList.forEach(([label,key])=>{
     const btn = document.createElement('button');
     btn.textContent = label;
     btn.className = 'tab-btn' + (key===activeKey ? ' active' : '');
-    btn.addEventListener('click', ()=>{ activeKey = key;
+    btn.addEventListener('click', ()=>{
+      activeKey = key;
       document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active'); showClass(activeKey); });
+      btn.classList.add('active');
+      showClass(activeKey, {updateUrl:true});
+    });
     tabs.appendChild(btn);
   });
 }
 
 function buildTagCloud(){
   const tags = new Map();
-  Object.values(allData).flat().forEach(topic=> (topic.tags||topic.tags===undefined) && (topic.tags||[]).forEach(t=> tags.set(t, (tags.get(t)||0)+1)));
+  Object.values(allData).flat().forEach(topic=> (topic.tags||[]).forEach(t=> tags.set(t, (tags.get(t)||0)+1)));
   const tagCloud = document.getElementById('tagCloud');
   tagCloud.innerHTML = '';
   [...tags.keys()].sort((a,b)=>a.localeCompare(b,'ru')).forEach(tag=>{
@@ -65,7 +67,7 @@ function buildTagCloud(){
     pill.addEventListener('click', ()=>{
       if(activeTags.has(tag)) activeTags.delete(tag); else activeTags.add(tag);
       pill.classList.toggle('active');
-      showClass(activeKey);
+      showClass(activeKey, {updateUrl:true});
     });
     tagCloud.appendChild(pill);
   });
@@ -94,13 +96,20 @@ function updateCount(found, total){
   el.textContent = `${found} из ${total}`;
 }
 
-function showClass(key){
+function showClass(key, {updateUrl} = {updateUrl:false}){
   const container = document.getElementById('classContent');
   container.innerHTML = '';
 
   const all = allData[key] || [];
   const topics = all.filter(t => matchesSearch(t) && matchesTags(t));
   updateCount(topics.length, all.length);
+
+  if(updateUrl){
+    const params = new URLSearchParams(location.search);
+    params.set('class', key);
+    if(q) params.set('q', q); else params.delete('q');
+    history.replaceState(null, '', location.pathname + '?' + params.toString());
+  }
 
   if(topics.length===0){
     const p = document.createElement('p');
@@ -135,4 +144,12 @@ function showClass(key){
 
     container.appendChild(card);
   });
+}
+
+function getParam(name){ const params = new URLSearchParams(location.search); return params.get(name); }
+function getClassFromUrl(){
+  const c = getParam('class');
+  if(!c) return null;
+  const allowed = new Set(['5','6','7','8','9','10','11']);
+  return allowed.has(c) ? c : null;
 }
