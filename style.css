@@ -33,7 +33,7 @@ header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(1.2) blur(8
 .menu{ display:flex; gap:18px; align-items:center }
 .menu a{ padding:8px 12px; border-radius:10px }
 .menu a:hover{ background:var(--panel) }
-.menu a.is-active{ background:var(--brand); color:#fff }
+.menu a.is-active{ background:var(--brand); color:#ffffff }
 .cta{ background:var(--brand); color:#fff; padding:8px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:600 }
 
 /* ===== Telegram icon/link ===== */
@@ -112,4 +112,9 @@ footer{ border-top:1px solid var(--border); padding:24px 0; color:var(--muted) }
   h1{ font-size:30px }
   .menu{ display:none }
   .card{ grid-column:span 12 }
+}
+/* Светлая тема — поведение кнопки "Записаться" при наведении */
+html[data-theme="light"] .cta:hover {
+  background: #232735; /* чуть темнее основного синего */
+  color: #fff;
 }
