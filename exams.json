@@ -1,0 +1,47 @@
+{
+  "ege": [
+    {
+      "title": "ЕГЭ: теория и тренажёры по информатике",
+      "updated": "2025-10-03",
+      "tags": [
+        "ЕГЭ",
+        "теория",
+        "тренажёры"
+      ],
+      "items": [
+        {
+          "label": "Сборник заданий (PDF)",
+          "url": "https://example.com/ege-tasks.pdf"
+        },
+        {
+          "label": "Разбор типовых задач (видео)",
+          "url": "https://example.com/ege-video"
+        },
+        {
+          "label": "Онлайн-тренажёр",
+          "url": "https://example.com/ege-trainer"
+        }
+      ]
+    }
+  ],
+  "oge": [
+    {
+      "title": "ОГЭ: подготовка и примеры решений",
+      "updated": "2025-10-03",
+      "tags": [
+        "ОГЭ",
+        "практика"
+      ],
+      "items": [
+        {
+          "label": "Банк заданий (таблица)",
+          "url": "https://example.com/oge-bank"
+        },
+        {
+          "label": "Памятка по теории (PDF)",
+          "url": "https://example.com/oge-theory.pdf"
+        }
+      ]
+    }
+  ]
+}
