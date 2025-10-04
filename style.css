@@ -1,1 +1,115 @@
-body{font-family:sans-serif;}
+/* ===== Theme variables ===== */
+:root{
+  --bg:#111318; --panel:#161922; --text:#E6E8EB; --muted:#AAB2BF;
+  --brand:#3A7FFF; --accent:#36E0B8; --border:#232735;
+  --radius:14px;
+  --knob-x: 0px; /* dark by default */
+}
+html[data-theme="light"]{
+  --bg:#F7F8FA; --panel:#FFFFFF; --text:#1B1F27; --muted:#5A6372; --border:#E6E8EB;
+  --knob-x: 18px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+}
+
+*{ box-sizing:border-box }
+body{
+  margin:0; font-family:Rubik,system-ui,-apple-system,Segoe UI,Arial;
+  background:var(--bg); color:var(--text);
+}
+a{ color:var(--brand); text-decoration:none }
+a:hover{ text-decoration:underline }
+
+.wrap{ max-width:1100px; margin:0 auto; padding:0 20px }
+
+/* ===== Header / Nav ===== */
+header{ position:sticky; top:0; z-index:30; backdrop-filter:saturate(1.2) blur(8px); background:color-mix(in hsl, var(--bg) 85%, transparent); border-bottom:1px solid var(--border) }
+.nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 0 }
+.logo{ display:flex; align-items:center; gap:10px; font-weight:700; color:var(--text) !important; text-decoration:none }
+.logo svg{ width:28px; height:28px }
+.menu{ display:flex; gap:18px; align-items:center }
+.menu a{ padding:8px 12px; border-radius:10px }
+.menu a:hover{ background:var(--panel) }
+.menu a.is-active{ background:var(--brand); color:#fff }
+.cta{ background:var(--brand); color:#fff; padding:8px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:600 }
+
+/* ===== Telegram icon/link ===== */
+.menu .tg-link{ display:inline-flex; align-items:center; gap:6px; transition: color .25s ease }
+.icon-tg{ width:17px; height:17px; flex-shrink:0; color:currentColor; fill:none; transition: transform .2s ease, color .25s ease, fill .25s ease }
+.menu .tg-link:hover .icon-tg{ transform:scale(1.15) rotate(-6deg); color:#26A5E4; fill:#26A5E4 }
+
+/* ===== Theme switch (SVG icons in knob) ===== */
+.switch{ display:inline-flex; align-items:center; gap:8px; margin-left:10px; user-select:none }
+#themeSwitch{
+  width:44px; height:26px; border-radius:999px; position:relative; cursor:pointer; overflow:hidden;
+  border:1px solid var(--border);
+  background:linear-gradient(90deg, rgba(58,127,255,.15), rgba(54,224,184,.15)); background-size:200% 100%;
+}
+/* Animate ONLY when html has .theme-animate (set on user toggle) */
+html.theme-animate #themeSwitch{ transition: background-position .6s ease, box-shadow .25s ease, border-color .25s ease }
+html.theme-animate #themeSwitch.twist{ box-shadow:0 0 0 6px rgba(58,127,255,.20); background-position:100% 0 }
+
+/* Trail */
+#themeSwitch::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(16px 16px at 6px 50%, rgba(58,127,255,.35), transparent 60%);
+  opacity:0; transform:translateX(0); pointer-events:none;
+}
+html.theme-animate #themeSwitch.twist::before{ transition:transform .28s ease, opacity .28s ease; opacity:1; transform:translateX(22px) }
+
+/* Knob */
+#themeSwitch .knob{
+  position:absolute; left:3px; top:3px; width:20px; height:20px; border-radius:50%;
+  background:var(--text); transform:translateX(var(--knob-x));
+  box-shadow:0 2px 6px rgba(0,0,0,.25);
+}
+html.theme-animate #themeSwitch .knob{ transition:transform .35s cubic-bezier(.2,1.4,.2,1), background-color .25s ease, box-shadow .25s ease }
+html.theme-animate #themeSwitch.twist .knob{ animation:knob-pop .32s ease both }
+@keyframes knob-pop{ 0%{ transform:translateX(var(--knob-x)) scale(1) } 55%{ transform:translateX(calc(var(--knob-x) + 2px)) scale(1.12); box-shadow:0 4px 12px rgba(0,0,0,.35) } 100%{ transform:translateX(var(--knob-x)) scale(1) } }
+
+/* Icons inside knob */
+#themeSwitch .icon{ position:absolute; inset:0; width:12px; height:12px; margin:auto; color:var(--bg); opacity:0 }
+html[data-theme="light"] #themeSwitch .icon.sun{ opacity:1 }
+html[data-theme="dark"]  #themeSwitch .icon.moon{ opacity:1 }
+html.theme-animate #themeSwitch .icon{ transition:opacity .18s ease }
+
+/* Global smoothness ONLY on toggle */
+html.theme-animate body,
+html.theme-animate header,
+html.theme-animate .card,
+html.theme-animate .tag,
+html.theme-animate .menu a,
+html.theme-animate footer{ transition: background-color .28s ease, color .28s ease, border-color .28s ease, box-shadow .28s ease }
+
+/* ===== Sections / Cards / Grid ===== */
+section{ padding:48px 0 }
+.hero{ position:relative; overflow:hidden; border-bottom:1px solid var(--border); background: radial-gradient(1200px 400px at 50% -10%, color-mix(in oklab, var(--brand) 15%, transparent) 0%, transparent 60%) }
+.hero .wrap{ padding:64px 20px 56px }
+h1{ font-size:40px; line-height:1.15; margin:0 0 12px }
+.subtitle{ color:var(--muted); max-width:720px; margin-bottom:24px }
+.grid{ display:grid; gap:16px; grid-template-columns:repeat(12,1fr) }
+
+.card{ grid-column:span 4; background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:18px }
+.card h3{ margin:0 0 6px; font-size:18px }
+.list{ display:flex; flex-direction:column; gap:10px; margin-top:10px }
+.list a{ padding:10px 12px; border:1px solid var(--border); border-radius:12px; background:var(--bg) }
+.tag{ font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--muted) }
+
+/* ===== Tabs ===== */
+.tabs{ display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap }
+.tab-btn{ padding:8px 14px; border:1px solid var(--border); border-radius:10px; background:var(--panel); cursor:pointer; color:var(--text) }
+.tab-btn.active{ background:var(--brand); color:#fff; font-weight:600 }
+
+/* ===== Footer ===== */
+footer{ border-top:1px solid var(--border); padding:24px 0; color:var(--muted) }
+
+/* ===== Responsive ===== */
+@media (max-width:960px){ .card{ grid-column:span 6 } }
+@media (max-width:640px){
+  h1{ font-size:30px }
+  .menu{ display:none }
+  .card{ grid-column:span 12 }
+}
